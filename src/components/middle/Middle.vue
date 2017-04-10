@@ -2,7 +2,9 @@
     <div class="voucher">
         <MHeader></MHeader>
         <MBody :initData="items"></MBody>
-        <MFooter></MFooter>
+        <MFooter
+            :initCount="initCount"
+        ></MFooter>
     </div>
 </template>
 
@@ -12,7 +14,13 @@
     import MFooter from './MFooter.vue'
     const Middle = {
         name: 'Middle',
-        props: ['initData'],
+        props: {
+            initData: Array,
+            initCount: {
+                type: Object,
+                required: true
+            }
+        },
         data: function () {
             return {
                 items: this.initData

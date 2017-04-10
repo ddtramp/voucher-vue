@@ -1,8 +1,15 @@
 <template>
   <div id="app">
       <Top name="Top" :initData="top"></Top>
-      <Middle name="Middle" :initData="items"></Middle>
-
+      <Middle
+          name="Middle"
+          :initData="items"
+          :initCount="count"
+      ></Middle>
+      <Bottom
+          :initData="count"
+          :extraInfo="extraInfo"
+      ></Bottom>
       <DropDown
         :initData="dropDown"
       ></DropDown>
@@ -14,6 +21,7 @@
     import MiddleEvent from './Event/Middle'
     import Top from './components/top/Top.vue'
     import Middle from './components/middle/Middle.vue'
+    import Bottom from './components/bottom/Bottom.vue'
     import DropDown from './components/DropDown.vue'
     import moment from 'moment'
     const defaultItem = {
@@ -94,8 +102,9 @@
                         }
                     }
                 ],
-                b: {
-                    hello: 12
+                extraInfo: {
+                    zdr: '123213',
+                    zdrName: 'jack'
                 },
                 scrollTop: 0,
                 dropDown: {
@@ -107,6 +116,37 @@
                     }
                 }
 
+            }
+        },
+        computed: {
+            count: function () {
+                let jfje = 0
+                let dfje = 0
+                this.items.forEach((v, i) => {
+                    jfje = jfje + parseFloat(v.jfje ? v.jfje : 0)
+                    dfje = dfje + parseFloat(v.dfje ? v.dfje : 0)
+                })
+                return {
+                    jfje: jfje,
+                    dfje: dfje,
+                    DX: (jfje === dfje && dfje) ? this.DX(jfje) : ''
+                }
+            }
+        },
+        methods: {
+            DX (num) {
+                var strOutput = ''
+                var strUnit = '仟佰拾亿仟佰拾万仟佰拾元角分'
+                num += '00'
+                var intPos = num.indexOf('.')
+                if (intPos >= 0) {
+                    num = num.substring(0, intPos) + num.substr(intPos + 1, 2)
+                }
+                strUnit = strUnit.substr(strUnit.length - num.length)
+                for (var i = 0; i < num.length; i++) {
+                    strOutput += '零壹贰叁肆伍陆柒捌玖'.substr(num.substr(i, 1), 1) + strUnit.substr(i, 1)
+                }
+                return strOutput.replace(/零角零分$/, '整').replace(/零[仟佰拾]/g, '零').replace(/零{2,}/g, '零').replace(/零([亿|万])/g, '$1').replace(/零+元/, '元').replace(/亿零{0,3}万/, '亿').replace(/^元/, '零元')
             }
         },
         created: function () {
@@ -194,6 +234,7 @@
         components: {
             Top,
             Middle,
+            Bottom,
             DropDown
         }
     }

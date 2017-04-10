@@ -35,9 +35,8 @@
 
 <script>
     /**
-     *
+     * TODO should use props control state; just like react
      * @:SET_VALUE {Function} when value change emit
-     * @type
      */
     const Je = {
         name: 'Je',
@@ -49,6 +48,10 @@
             status: {
                 type: Boolean,
                 required: true
+            },
+            disable: {
+                type: Boolean,
+                default: false
             }
         },
         data: function () {
@@ -79,7 +82,7 @@
         },
         methods: {
             showEditor: function () {
-                this.toggle = true
+                this.disable ? '' : this.toggle = true
             },
             focusout: function () {
                 this.toggle = false

@@ -5,84 +5,26 @@
             <tr >
                 <td colSpan="2" class="zy">
                     <div class="footerLeft">
-                        <p><span>合计：</span><span>零元整</span></p>
+                        <p><span>合计：</span><span>{{ initCount.DX }}</span></p>
                     </div>
                 </td>
                 <td  class="je">
-                    <ul  class="jeul">
-                        <li>
-                            亿
-                        </li>
-                        <li>
-                            千
-                        </li>
-                        <li class="blue">
-                            百
-                        </li>
-                        <li>
-                            十
-                        </li>
-                        <li>
-                            万
-                        </li>
-                        <li class="blue">
-                            千
-                        </li>
-                        <li>
-                            百
-                        </li>
-                        <li>
-                            十
-                        </li>
-                        <li class="blue">
-                            元
-                        </li>
-                        <li>
-                            角
-                        </li>
-                        <li>
-                            分
-                        </li>
-                    </ul>
-
+                    <Je
+                        name="jfjehj"
+                        :initData="initCount.jfje"
+                        :status="status"
+                        :disable="true"
+                    >
+                    </Je>
                 </td>
                 <td  class="je">
-                    <ul  class="jeul">
-                        <li>
-                            亿
-                        </li>
-                        <li>
-                            千
-                        </li>
-                        <li class="blue">
-                            百
-                        </li>
-                        <li>
-                            十
-                        </li>
-                        <li>
-                            万
-                        </li>
-                        <li class="blue">
-                            千
-                        </li>
-                        <li>
-                            百
-                        </li>
-                        <li>
-                            十
-                        </li>
-                        <li class="blue">
-                            元
-                        </li>
-                        <li>
-                            角
-                        </li>
-                        <li>
-                            分
-                        </li>
-                    </ul>
-
+                    <Je
+                        name="dfjehj"
+                        :initData="initCount.dfje"
+                        :status="status"
+                        :disable="true"
+                    >
+                    </Je>
                 </td>
             </tr>
             </tbody>
@@ -91,8 +33,24 @@
 </template>
 
 <script>
+    import Je from '../middle/Je.vue'
+
     const MFooter = {
-        name: 'MFooter'
+        name: 'MFooter',
+        props: {
+            initCount: {
+                type: Object,
+                required: true
+            }
+        },
+        data () {
+            return {
+                status: false
+            }
+        },
+        components: {
+            Je
+        }
     }
 
     export default MFooter

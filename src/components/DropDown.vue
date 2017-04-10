@@ -10,14 +10,18 @@
         @blur="blur"
         @keydown.tab.prevent="tab($event)"
         @keydown.enter.prevent="enter($event)"
+        @keydown.up.prevent="up($event)"
+        @keydown.down.prevent="down($event)"
 
     />
     <div  class="dropdown"  >
         <ul
+            ref="wrapper"
         >
             <li v-if="this.filterItems.length===0">没有匹配的数据</li>
             <li
                 v-for="(item, index) in this.filterItems"
+                :class= "{ dropDownCurrent: (index === liCurrent) }"
                 :key="index"
                 @mousedown="click(item, index)"
             >{{ item.all }}</li>
@@ -25,6 +29,7 @@
         </ul>
         <div
             class="newSubject"
+            @mousedown="newSubject"
         >
             <span>+</span> 新增科目
         </div>
@@ -41,7 +46,8 @@
         data: function () {
             return {
                 items: [],
-                filter: ''
+                filter: '',
+                liCurrent: 0
             }
         },
         computed: {
@@ -65,6 +71,7 @@
             blur: function (e) {
                 e.target.value = ''
                 this.filter = ''
+                this.liCurrent = 0
                 MiddleEvent.$emit('DROPDOWN_BLUR')
             },
             tab ($event) {
@@ -72,6 +79,23 @@
             },
             enter ($event) {
                 MiddleEvent.$emit('M_ITEM_KEYDOWN', 'subject', null, $event)
+                MiddleEvent.$emit('DROPDOWN_CLICK', this.filterItems[this.liCurrent])
+            },
+            up ($event) {
+                if (this.liCurrent > 0) {
+                    this.liCurrent--
+                    this.$refs.wrapper.scrollTop = (this.liCurrent > 3) ? (this.liCurrent - 3) * 30 : 0
+                }
+            },
+            down ($event) {
+                if (this.liCurrent < (this.filterItems.length - 1)) {
+                    this.liCurrent = this.liCurrent + 1
+                }
+                this.$refs.wrapper.scrollTop = (this.liCurrent > 3) ? (this.liCurrent - 3) * 30 : 0
+            },
+            newSubject () {
+                // TODO not done
+                console.log('new subject click')
             }
         },
         created: function () {
