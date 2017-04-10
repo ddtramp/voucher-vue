@@ -26,25 +26,34 @@
                 :value="data"
                 @focusout="focusout"
                 @input="change"
+                @keydown.enter.tab.prevent="keydown($event)"
+
             />
         </div>
     </div>
 </template>
 
 <script>
+    /**
+     *
+     * @:SET_VALUE {Function} when value change emit
+     * @type
+     */
     const Je = {
         name: 'Je',
         props: {
-            setValue: {
-                type: Function
-            },
+            name: String,
             initData: {
                 type: [Number, String]
+            },
+            status: {
+                type: Boolean,
+                required: true
             }
         },
         data: function () {
             return {
-                toggle: false,          // editor show & hide
+                toggle: this.status,          // editor show & hide
                 focus: true,            // input focus
                 d: ''
             }
@@ -63,6 +72,11 @@
                 }
             }
         },
+        watch: {
+            status () {
+                this.toggle = this.status   // watch props
+            }
+        },
         methods: {
             showEditor: function () {
                 this.toggle = true
@@ -76,10 +90,14 @@
                 let v = $event.target.value
                 this.focus = false
                 if (regNumber.test(v)) {
-                    this.setValue(v) // sent data to parent
+                    this.$emit('SET_VALUE', v) // sent data to parent
                 } else {
                     $event.target.value = this.data
                 }
+            },
+            keydown (e) {
+                this.toggle = false
+                this.$emit('KEYDOWN', e)
             },
             /**
              * 强制保留两位小数

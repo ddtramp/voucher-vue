@@ -1,8 +1,12 @@
 <template>
     <td class="je">
         <Je
+            name="dfje"
             :initData="initData"
-            :setValue="setJe"
+            :status="status"
+            @SET_VALUE="setJe"
+            @KEYDOWN="keydown"
+
         ></Je>
     </td>
 </template>
@@ -19,6 +23,10 @@
             },
             initData: {
                 type: [ Number, String ]
+            },
+            status: {
+                type: Boolean,
+                required: true
             }
         },
         data: function () {
@@ -29,6 +37,9 @@
         methods: {
             setJe (v) {
                 MiddleEvent.$emit('M_DFJE_CHANGE', this.index, v)
+            },
+            keydown ($event) {
+                MiddleEvent.$emit('M_ITEM_KEYDOWN', 'dfje', this.index, $event)
             }
         },
         components: {

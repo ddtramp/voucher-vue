@@ -21,7 +21,14 @@
         subject: '',
         subjectName: '',
         jfje: '',
-        dfje: ''
+        dfje: '',
+        status: {}
+    }
+    const defaultStatus = {
+        summary: false,
+        subject: false,
+        jfje: false,
+        dfje: false
     }
     const App = {
         name: 'app',
@@ -39,28 +46,52 @@
                         subject: '',
                         subjectName: '',
                         jfje: '',
-                        dfje: ''
+                        dfje: '',
+                        status: {
+                            summary: false,
+                            subject: false,
+                            jfje: false,
+                            dfje: false
+                        }
                     },
                     {
                         summary: '',
                         subject: '',
                         subjectName: '',
                         jfje: '',
-                        dfje: ''
+                        dfje: '',
+                        status: {
+                            summary: false,
+                            subject: false,
+                            jfje: false,
+                            dfje: false
+                        }
                     },
                     {
                         summary: '',
                         subject: '',
                         subjectName: '',
                         jfje: '',
-                        dfje: ''
+                        dfje: '',
+                        status: {
+                            summary: false,
+                            subject: false,
+                            jfje: false,
+                            dfje: false
+                        }
                     },
                     {
                         summary: '',
                         subject: '',
                         subjectName: '',
                         jfje: '',
-                        dfje: ''
+                        dfje: '',
+                        status: {
+                            summary: false,
+                            subject: false,
+                            jfje: false,
+                            dfje: false
+                        }
                     }
                 ],
                 b: {
@@ -89,10 +120,31 @@
                 this.top.accessory = d
             })
             MiddleEvent.$on('M_ADD_ITEM', (index) => {
-                this.items.splice(index, 0, defaultItem)
+                this.items.splice(index, 0, Object.assign({}, defaultItem, { status: Object.assign({}, defaultStatus) }))
             })
             MiddleEvent.$on('M_DEL_ITEM', (index) => {
                 this.items.splice(index, 1)
+            })
+            MiddleEvent.$on('M_ITEM_KEYDOWN', (itemName, index, $event) => {
+                switch (itemName) {
+                case 'summary':
+                    this.items[index].status.summary = false
+                    MiddleEvent.$emit('M_SUBJECT_CLICK', index, { offsetTop: $event.target.offsetTop, offsetLeft: $event.target.offsetLeft + 200 })
+                    break
+                case 'subject':
+                    this.items[this.dropDown.index].status.subject = false
+                    this.items[this.dropDown.index].status.jfje = true
+                    break
+                case 'jfje':
+                    this.items[index].status.jfje = false
+                    this.items[index].status.dfje = true
+                    break
+                case 'dfje':
+                    this.items[index].status.dfje = false
+                    break
+                default:
+                    console.log('lala')
+                }
             })
             MiddleEvent.$on('M_SUMMARY_CHANGE', (index, text) => {
                 this.items[index].summary = text
@@ -118,13 +170,13 @@
                     }
                 }
             })
-            MiddleEvent.$on('M_SUBJECT_CLICK', (index, e) => {
+            MiddleEvent.$on('M_SUBJECT_CLICK', (index, d) => {
                 this.dropDown = {
                     index: index,
                     show: true,
                     position: {
-                        top: e.target.offsetTop - this.scrollTop,
-                        left: e.target.offsetLeft
+                        top: d.offsetTop - this.scrollTop,
+                        left: d.offsetLeft
                     }
                 }
             })
@@ -132,6 +184,10 @@
                 this.items[this.dropDown.index].subject = item.subject
                 this.items[this.dropDown.index].subjectName = item.name
                 this.dropDown.index = ''
+                this.dropDown.show = false
+            })
+            MiddleEvent.$on('DROPDOWN_BLUR', () => {
+                this.dropDown.index = 0
                 this.dropDown.show = false
             })
         },

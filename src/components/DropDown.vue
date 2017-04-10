@@ -7,7 +7,10 @@
     <textarea
         ref="textareaInput"
         @input="change"
-        @focusout="focusout"
+        @blur="blur"
+        @keydown.tab.prevent="tab($event)"
+        @keydown.enter.prevent="enter($event)"
+
     />
     <div  class="dropdown"  >
         <ul
@@ -16,7 +19,7 @@
             <li
                 v-for="(item, index) in this.filterItems"
                 :key="index"
-                @click="click(item, index)"
+                @mousedown="click(item, index)"
             >{{ item.all }}</li>
 
         </ul>
@@ -59,9 +62,16 @@
             click: function (item) {
                 MiddleEvent.$emit('DROPDOWN_CLICK', item)
             },
-            focusout: function (e) {
+            blur: function (e) {
                 e.target.value = ''
                 this.filter = ''
+                MiddleEvent.$emit('DROPDOWN_BLUR')
+            },
+            tab ($event) {
+                MiddleEvent.$emit('M_ITEM_KEYDOWN', 'subject', null, $event)
+            },
+            enter ($event) {
+                MiddleEvent.$emit('M_ITEM_KEYDOWN', 'subject', null, $event)
             }
         },
         created: function () {

@@ -21,8 +21,9 @@
             }
         },
         methods: {
-            click: function (index, $event) {
-                MiddleEvent.$emit('M_SUBJECT_CLICK', index, $event)
+            click (index, $event) {
+                MiddleEvent.$emit('M_SUBJECT_CLICK_FOR_SCROLL', index, $event)
+                MiddleEvent.$emit('M_SUBJECT_CLICK', index, { offsetTop: $event.target.offsetTop, offsetLeft: $event.target.offsetLeft })
             }
         }
     }

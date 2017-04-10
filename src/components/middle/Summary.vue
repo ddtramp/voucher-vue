@@ -4,7 +4,7 @@
             <div
                 class="zyText"
                 :class="{ hidden: toggle }"
-                @click="showEditor"
+                @click="showEditor(index, $event)"
             >{{ initData }}</div>
             <div
                 class="zyEdit"
@@ -14,6 +14,7 @@
                     ref="textArea"
                     @focusout="focusout"
                     @input="change(index, $event.target.value)"
+                    @keydown.enter.tab.prevent="keydown(index, $event)"
                 >{{ initData }}</textarea>
             </div>
         </div>
@@ -32,15 +33,20 @@
             },
             initData: {
                 type: String
+            },
+            status: {
+                type: Boolean,
+                required: true
             }
         },
         data: function () {
             return {
-                toggle: false
+                toggle: this.status
             }
         },
         methods: {
-            showEditor: function () {
+            showEditor: function (index, $event) {
+                MiddleEvent.$emit('M_SUBJECT_CLICK_FOR_SCROLL', index, $event)
                 this.toggle = true
             },
             focusout: function () {
@@ -48,6 +54,9 @@
             },
             change: function (index, text) {
                 MiddleEvent.$emit('M_SUMMARY_CHANGE', index, text)
+            },
+            keydown: function (index, $event) {
+                MiddleEvent.$emit('M_ITEM_KEYDOWN', 'summary', index, $event)
             }
         },
         updated: function () {
@@ -73,6 +82,7 @@
     .zyEdit {  height: 60px;  }
 
     .zyEdit textarea {
+        position: relative;
         border: 2px solid #3ec8dd;
         width: 192px;
         height: 53px;

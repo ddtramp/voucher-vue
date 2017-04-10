@@ -1,6 +1,7 @@
 <template>
     <div class="body"
-        @scroll="scroll($event)"
+         ref="scroll"
+         @scroll="scroll($event)"
     >
         <table>
             <MBTrs :initData="items"></MBTrs>
@@ -23,6 +24,20 @@
             scroll (e) {
                 MiddleEvent.$emit('M_SCROLL', e)
             }
+        },
+        created: function () {
+            MiddleEvent.$on('M_SUBJECT_CLICK_FOR_SCROLL', (index, e) => {
+                let scrollDiv = this.$refs.scroll
+                let distance = parseInt(index) * 61
+                if (scrollDiv.scrollTop > distance) {
+                    distance = (parseInt(index) * 61)
+                } else if (distance > scrollDiv.scrollTop + 61 * 3) {
+                    distance = (parseInt(index) - 3) * 61
+                } else {
+                    return
+                }
+                this.$refs.scroll.scrollTop = distance
+            })
         },
         components: {
             MBTrs
