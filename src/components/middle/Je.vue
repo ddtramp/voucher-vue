@@ -63,7 +63,7 @@
         },
         computed: {
             value () {
-                this.data = this.initData
+                this.d = this.initData
                 return this.handleJe(this.initData)
             },
             data: {
