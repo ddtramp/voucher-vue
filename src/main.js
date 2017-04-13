@@ -2,9 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import Validator from 'vue-validator'
-
-Vue.use(Validator)
+// import Validator from 'vue-validator' // dumn it； this component does not work
+// Vue.use(Validator)
 // import router from './router'
 
 Vue.config.productionTip = false
